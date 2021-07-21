@@ -28,7 +28,7 @@ router.post("/", (req, res) => {
   User.findOne({ email }).then((user) => {
     // Checking if user exists
     if (!user) {
-      return res.status(404).json({ emailnotfound: "Email not found" });
+      return res.status(404).json("Email not found");
     }
     // Checking password
     bcrypt.compare(password, user.password).then((isMatch) => {
@@ -48,14 +48,13 @@ router.post("/", (req, res) => {
           (err, token) => {
             res.json({
               success: true,
-              token: "Bearer " + token,
+              token: "Bearer" + token,
+              message: "User found and logged in",
             });
           }
         );
       } else {
-        return res
-          .status(400)
-          .json({ passwordincorrect: "Password incorrect" });
+        return res.status(400).json("Password incorrect");
       }
     });
   });

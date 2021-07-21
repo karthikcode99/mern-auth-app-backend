@@ -6,6 +6,7 @@ const passport = require("passport");
 const usersRegistration = require("./routes/api/usersregistration");
 const usersLogin = require("./routes/api/userslogin");
 const usersForgotPassword = require("./routes/api/usersforgotpassword");
+const usersResetPassword = require("./routes/api/userresetpassword");
 
 app.use(express.json());
 
@@ -25,9 +26,10 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 
 // Routes
-app.use("/users/register", usersRegistration);
-app.use("/users/login", usersLogin);
-app.use("/users/forgotpassword", usersForgotPassword);
+app.use("/api/users/register", usersRegistration);
+app.use("/api/users/login", usersLogin);
+app.use("/api/users/forgotpassword", usersForgotPassword);
+app.use("/api/users/resetpassword", usersResetPassword);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server up and running on port ${port} !`));

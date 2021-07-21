@@ -26,15 +26,19 @@ router.post("/", (req, res) => {
   User.findOne({ email }).then((user) => {
     // Checking if user exists
     if (!user) {
-      return res.status(404).json({ emailnotfound: "Email not found" });
+      return res.status(404).json("email not in database");
     } else {
       // If user exists in database
       // Generating random string
       const token = crypto.randomBytes(20).toString("hex");
       user.update({
-        resetPasswordToken: token,
-        resertPasswordExpires: Date.now() + 3600000,
+        $addfields: {
+          resetPasswordToken: token,
+          resertPasswordExpires: Date.now() + 3600000,
+        },
       });
+      console.log(user);
+      console.log(token);
 
       // Creating reusable transporter object
       const transporter = nodemailer.createTransport({
@@ -53,7 +57,7 @@ router.post("/", (req, res) => {
         text:
           "You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
           "Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n" +
-          `http://localhost:3031/reset/${token}\n\n` +
+          `http://localhost:5001/reset/${token}\n\n` +
           "If you did not request this, please ignore this email and your password will remain unchanged.\n",
       };
       console.log("sending mail");

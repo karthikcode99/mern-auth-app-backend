@@ -5,7 +5,6 @@ const bcrypt = require("bcryptjs");
 // Loading input validation
 const validateRegisterInput = require("../../validation/register");
 
-
 // Loading User model
 const User = require("../../models/User");
 
@@ -20,7 +19,7 @@ router.post("/", (req, res) => {
   }
   User.findOne({ email: req.body.email }).then((user) => {
     if (user) {
-      return res.status(400).json({ email: "Email already exists" });
+      return res.status(400).json("Email already exists");
     } else {
       const newUser = new User({
         name: req.body.name,
@@ -35,7 +34,7 @@ router.post("/", (req, res) => {
           newUser.password = hash;
           newUser
             .save()
-            .then((user) => res.json(user))
+            .then((user) => res.json({ message: "user created" }))
             .catch((err) => console.log(err));
         });
       });
